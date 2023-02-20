@@ -1,14 +1,17 @@
 {
   "name": "cinemaddict",
+  "description": "Проект «Киноман» от HTML Academy",
   "version": "18.0.0",
   "private": true,
-  "description": "Проект «Киноман» от HTML Academy",
   "scripts": {
     "lint": "eslint src/",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "8.19.0",
     "eslint-config-htmlacademy": "6.0.0",
@@ -16,6 +19,13 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
   },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all",
+    "not < 0.25%"
+  ],
   "engines": {
     "node": "16"
   }
