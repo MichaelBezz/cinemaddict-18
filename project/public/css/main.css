@@ -10,7 +10,7 @@
   --horizontal-gap: 20px;
   --vertical-gap: 28px;
 
-  --font:'Open Sans', 'Arial', sans-serif;
+  --font: 'Open Sans', 'Arial', sans-serif;
   --font-size: 16px;
   --font-size-smaller: 14px;
   --font-size-bigger: 20px;
@@ -84,6 +84,25 @@ a:hover {
 
 button {
   cursor: pointer;
+}
+
+.link {
+  color: var(--text-color);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--vertical-gap));
+}
+
+.wrapper__main {
+  flex-grow: 1;
+}
+
+.wrapper__header,
+.wrapper__footer {
+  flex-shrink: 0;
 }
 
 .header {
