@@ -1,4 +1,4 @@
-export type MovieDetails = {
+export type FilmDetails = {
   title: string;
   alternative_title: string;
   total_rating: number;
@@ -23,11 +23,11 @@ export type UserDetails = {
   favorite: boolean;
 }
 
-export type Movie = {
+export type Film = {
   id: string;
   comments: string[];
-  film_info: MovieDetails;
+  film_info: FilmDetails;
   user_details: UserDetails;
 };
 
-export type Movies = Movie[];
+export type Films = Film[];

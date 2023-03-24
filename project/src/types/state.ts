@@ -1,11 +1,11 @@
 import {store} from '../store/store';
-import {Movies} from './movie';
+import {Films} from './film';
 
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export type MoviesDataState = {
-  movies: Movies;
-  isMoviesLoading: boolean;
+export type FilmsDataState = {
+  films: Films;
+  isFilmsLoading: boolean;
 };

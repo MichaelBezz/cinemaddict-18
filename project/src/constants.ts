@@ -4,10 +4,10 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Movies = '/movies',
+  Films = '/movies',
   Comments = '/comments'
 }
 
 export enum Reducer {
-  Movies = 'MOVIES'
+  Films = 'FILMS'
 }

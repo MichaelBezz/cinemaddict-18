@@ -1,8 +1,8 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import {moviesData} from './movies-data/movies-data';
+import {filmsData} from './films-data/films-data';
 import {Reducer} from '../constants';
 
 
 export const rootReducer = combineReducers({
-  [Reducer.Movies]: moviesData.reducer
+  [Reducer.Films]: filmsData.reducer
 });
