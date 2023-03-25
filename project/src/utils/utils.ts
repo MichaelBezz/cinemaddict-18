@@ -21,3 +21,15 @@ export const formatDescription = (description: string, maxLength = 139) => {
 
   return text;
 };
+
+export const getUserRating = (rating: number): string => {
+  switch (true) {
+    case rating >= 1 && rating < 11:
+      return 'novice';
+    case rating >= 11 && rating < 21:
+      return 'fan';
+    case rating >= 21:
+      return 'movie buff';
+    default: return '';
+  }
+};
