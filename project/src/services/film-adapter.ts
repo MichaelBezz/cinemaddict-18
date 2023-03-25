@@ -1,5 +1,5 @@
 import {Film} from '../types/film';
-import {FilmAdapted} from '../types/film-adapted';
+import {FilmAdapted} from '../types/film';
 
 
 export const adaptFilmToClient = (film: Film): FilmAdapted => ({

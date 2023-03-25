@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-import {FilmAdapted} from '../../types/film-adapted';
+import {FilmAdapted} from '../../types/film';
 import {formatDuration, formatReleaseData, formatGenre, formatDescription} from '../../utils/utils';
 import {AppRoute} from '../../constants';
 

@@ -2,7 +2,7 @@ import {createSelector} from '@reduxjs/toolkit';
 
 import {State} from '../../types/state';
 import {Films} from '../../types/film';
-import {FilmsAdapted} from '../../types/film-adapted';
+import {FilmsAdapted} from '../../types/film';
 
 import {adaptFilmToClient} from '../../services/film-adapter';
 import {Reducer} from '../../constants';
