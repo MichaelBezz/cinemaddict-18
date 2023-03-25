@@ -9,6 +9,7 @@ export enum APIRoute {
 }
 
 export enum Reducer {
+  Application = 'APPLICATION',
   Films = 'FILMS',
   Comments = 'COMMENTS'
 }
