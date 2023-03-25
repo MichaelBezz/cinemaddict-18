@@ -4,20 +4,23 @@ import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchFilms} from '../../store/api-actions';
 import {getAllFilms} from '../../store/films-data/selectors';
+import {getIsFilmDisplayed} from '../../store/application-data/selectors';
 
 import Navigation from '../../components/navigation/navigation';
 import Sort from '../../components/sort/sort';
 import FilmList from '../../components/film-list/film-list';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import FilmDetails from '../../components/film-details/film-details';
 
 
 const FILMS_PER_STEP = 5;
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [filmsDisplayed, setFilmsDisplayed] = useState<number>(0);
+  const [filmCount, setFilmCount] = useState<number>(0);
 
   const films = useAppSelector(getAllFilms);
+  const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
 
   useEffect(() => {
     dispatch(fetchFilms());
@@ -27,7 +30,7 @@ function MainPage(): JSX.Element {
     let isMounted = true;
 
     if (isMounted) {
-      setFilmsDisplayed(Math.min(FILMS_PER_STEP, films.length));
+      setFilmCount(Math.min(FILMS_PER_STEP, films.length));
     }
 
     return () => {
@@ -36,7 +39,7 @@ function MainPage(): JSX.Element {
   }, [films]);
 
   const handleShowMoreButtonClick = () => {
-    setFilmsDisplayed((prevFilmsDisplayed) =>
+    setFilmCount((prevFilmsDisplayed) =>
       Math.min(prevFilmsDisplayed + FILMS_PER_STEP, films.length)
     );
   };
@@ -50,9 +53,9 @@ function MainPage(): JSX.Element {
         <section className="films-list">
           <h2 className="films-list__title visually-hidden">All movies. Upcoming</h2>
 
-          <FilmList films={films.slice(0, filmsDisplayed)} />
+          <FilmList films={films.slice(0, filmCount)} />
 
-          {films.length > filmsDisplayed && (
+          {films.length > filmCount && (
             <ShowMoreButton onClick={handleShowMoreButtonClick} />
           )}
         </section>
@@ -70,7 +73,9 @@ function MainPage(): JSX.Element {
         </section>
       </section>
 
-      {/* <FilmDetails /> */}
+      {isDetailsDisplayed && (
+        <FilmDetails />
+      )}
     </>
   );
 }

@@ -1,10 +1,47 @@
+import {useEffect} from 'react';
+import {useSearchParams} from 'react-router-dom';
+
+import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {setFilmId} from '../../store/application-data/application-data';
+
+
 function FilmDetails(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const handleDocumentKeydown = (event: KeyboardEvent) => {
+      event.preventDefault();
+
+      if (event.key === 'Escape') {
+        dispatch(setFilmId(null));
+        setSearchParams('');
+      }
+    };
+
+    if (isMounted) {
+      document.addEventListener('keydown', handleDocumentKeydown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleDocumentKeydown);
+      isMounted = false;
+    };
+  }, [dispatch, setSearchParams]);
+
+  const handleCloseButtonClick = () => {
+    dispatch(setFilmId(null));
+    setSearchParams('');
+  };
+
   return (
     <section className="film-details">
       <div className="film-details__inner">
         <div className="film-details__top-container">
           <div className="film-details__close">
-            <button className="film-details__close-btn" type="button">close</button>
+            <button className="film-details__close-btn" type="button" onClick={handleCloseButtonClick}>close</button>
           </div>
           <div className="film-details__info-wrap">
             <div className="film-details__poster">

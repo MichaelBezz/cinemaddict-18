@@ -1,8 +1,11 @@
-import {Link} from 'react-router-dom';
+import {useEffect} from 'react';
+import {Link, useSearchParams} from 'react-router-dom';
+
+import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {setFilmId} from '../../store/application-data/application-data';
 
 import {FilmAdapted} from '../../types/film';
 import {formatDuration, formatReleaseData, formatGenre, formatDescription} from '../../utils/utils';
-import {AppRoute} from '../../constants';
 
 
 type FilmCardProps = {
@@ -10,11 +13,25 @@ type FilmCardProps = {
 };
 
 function FilmCard({film}: FilmCardProps): JSX.Element {
-  const {filmInfo: {title, totalRating, poster, release, runtime, genre, description}} = film;
+  const {id, filmInfo: {title, totalRating, poster, release, runtime, genre, description}} = film;
+
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const searchFilm = searchParams.get('film');
+
+  useEffect(() => {
+    if (searchFilm && searchFilm === id) {
+      dispatch(setFilmId(searchFilm));
+    }
+  }, [dispatch, id, searchFilm]);
+
+  const handleCardLinkClick = () => {
+    dispatch(setFilmId(id ?? searchFilm));
+  };
 
   return (
     <article className="film-card">
-      <Link className="film-card__link" to={AppRoute.NotFound}>
+      <Link className="film-card__link" to={`?film=${id}`} onClick={handleCardLinkClick}>
         <h3 className="film-card__title">{title}</h3>
         <p className="film-card__rating">{totalRating}</p>
         <p className="film-card__info">
