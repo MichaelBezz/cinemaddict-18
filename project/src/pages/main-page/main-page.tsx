@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
@@ -11,14 +11,35 @@ import FilmList from '../../components/film-list/film-list';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 
 
+const FILMS_PER_STEP = 5;
+
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const [filmsDisplayed, setFilmsDisplayed] = useState<number>(0);
 
   const films = useAppSelector(getFilms);
 
   useEffect(() => {
     dispatch(fetchFilms());
   }, [dispatch]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      setFilmsDisplayed(Math.min(FILMS_PER_STEP, films.length));
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [films]);
+
+  const handleShowMoreButtonClick = () => {
+    setFilmsDisplayed((prevFilmsDisplayed) =>
+      Math.min(prevFilmsDisplayed + FILMS_PER_STEP, films.length)
+    );
+  };
 
   return (
     <>
@@ -29,8 +50,11 @@ function MainPage(): JSX.Element {
         <section className="films-list">
           <h2 className="films-list__title visually-hidden">All movies. Upcoming</h2>
 
-          <FilmList films={films} />
-          <ShowMoreButton />
+          <FilmList films={films.slice(0, filmsDisplayed)} />
+
+          {films.length > filmsDisplayed && (
+            <ShowMoreButton onClick={handleShowMoreButtonClick} />
+          )}
         </section>
 
         <section className="films-list films-list--extra">
