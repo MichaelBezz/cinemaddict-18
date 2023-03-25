@@ -1,3 +1,5 @@
+export type FilmId = string;
+
 export type FilmDetails = {
   title: string;
   alternative_title: string;
@@ -49,14 +51,14 @@ export type UserDetailsAdapted = {
 };
 
 export type Film = {
-  id: string;
+  id: FilmId;
   comments: string[];
   film_info: FilmDetails;
   user_details: UserDetails;
 };
 
 export type FilmAdapted = {
-  id: string;
+  id: FilmId;
   comments: string[];
   filmInfo: FilmDetailsAdapted;
   userDetails: UserDetailsAdapted;

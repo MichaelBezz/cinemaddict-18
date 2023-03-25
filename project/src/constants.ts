@@ -9,5 +9,6 @@ export enum APIRoute {
 }
 
 export enum Reducer {
-  Films = 'FILMS'
+  Films = 'FILMS',
+  Comments = 'COMMENTS'
 }
