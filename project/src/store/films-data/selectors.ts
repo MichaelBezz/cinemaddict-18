@@ -8,10 +8,10 @@ import {adaptFilmToClient} from '../../services/film-adapter';
 import {Reducer} from '../../constants';
 
 
-export const getAllFilms = (state: State): Films | [] => state[Reducer.Films].films;
+export const getFilms = (state: State): Films | [] => state[Reducer.Films].films;
 export const getIsLoading = (state: State): boolean => state[Reducer.Films].isLoading;
 
-export const getFilms = createSelector(
-  [getAllFilms],
+export const getAllFilms = createSelector(
+  [getFilms],
   (films: Films): FilmsAdapted => films.map((film) => adaptFilmToClient(film))
 );

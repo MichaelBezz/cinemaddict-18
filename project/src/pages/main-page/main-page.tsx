@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchFilms} from '../../store/api-actions';
-import {getFilms} from '../../store/films-data/selectors';
+import {getAllFilms} from '../../store/films-data/selectors';
 
 import Navigation from '../../components/navigation/navigation';
 import Sort from '../../components/sort/sort';
@@ -17,7 +17,7 @@ function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const [filmsDisplayed, setFilmsDisplayed] = useState<number>(0);
 
-  const films = useAppSelector(getFilms);
+  const films = useAppSelector(getAllFilms);
 
   useEffect(() => {
     dispatch(fetchFilms());
@@ -69,6 +69,8 @@ function MainPage(): JSX.Element {
           {/* <FilmList films={films} /> */}
         </section>
       </section>
+
+      {/* <FilmDetails /> */}
     </>
   );
 }

@@ -1,9 +1,9 @@
 import {useAppSelector} from '../../hooks/use-app-selector';
-import {getFilms} from '../../store/films-data/selectors';
+import {getAllFilms} from '../../store/films-data/selectors';
 
 
 function Footer(): JSX.Element {
-  const allFilms = useAppSelector(getFilms);
+  const allFilms = useAppSelector(getAllFilms);
 
   return (
     <footer className="wrapper__footer footer">
