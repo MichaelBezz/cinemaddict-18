@@ -7,5 +7,5 @@ export type AppDispatch = typeof store.dispatch;
 
 export type FilmsDataState = {
   films: Films;
-  isFilmsLoading: boolean;
+  isLoading: boolean;
 };

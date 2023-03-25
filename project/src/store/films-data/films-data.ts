@@ -6,7 +6,7 @@ import {Reducer} from '../../constants';
 
 const initialState: FilmsDataState = {
   films: [],
-  isFilmsLoading: false
+  isLoading: false
 };
 
 export const filmsData = createSlice({
@@ -16,14 +16,14 @@ export const filmsData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchFilms.pending, (state) => {
-        state.isFilmsLoading = true;
+        state.isLoading = true;
       })
       .addCase(fetchFilms.fulfilled, (state, action) => {
-        state.isFilmsLoading = false;
+        state.isLoading = false;
         state.films = action.payload ?? [];
       })
       .addCase(fetchFilms.rejected, (state) => {
-        state.isFilmsLoading = false;
+        state.isLoading = false;
         state.films = [];
       });
   }

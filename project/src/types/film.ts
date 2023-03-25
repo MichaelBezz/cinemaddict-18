@@ -21,7 +21,7 @@ export type UserDetails = {
   already_watched: boolean;
   watching_date: string;
   favorite: boolean;
-}
+};
 
 export type Film = {
   id: string;
