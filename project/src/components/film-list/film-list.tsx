@@ -1,10 +1,18 @@
 import FilmCard from '../film-card/film-card';
 
+import {FilmsAdapted} from '../../types/film-adapted';
 
-function FilmList(): JSX.Element {
+
+type FilmListProps = {
+  films: FilmsAdapted;
+};
+
+function FilmList({films}: FilmListProps): JSX.Element {
   return (
     <div className="films-list__container">
-      <FilmCard />
+      {films.map((film) => (
+        <FilmCard key={film.id} film={film} />
+      ))}
     </div>
   );
 }
