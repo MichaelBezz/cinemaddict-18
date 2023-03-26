@@ -9,8 +9,11 @@ export const formatDuration = (minute: number): string =>
 export const formatReleaseData = (data: string): string =>
   dayjs(data).format('YYYY');
 
-export const formatGenre = (genres: string[]): string =>
-  genres.join(', ');
+export const formatReleaseFullData = (data: string): string =>
+  dayjs(data).format('D MMMM YYYY');
+
+export const formatListProperties = (list: string[]): string =>
+  list.join(', ');
 
 export const formatDescription = (description: string, maxLength = 139) => {
   const text = description.trim();

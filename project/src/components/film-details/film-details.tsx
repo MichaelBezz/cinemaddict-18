@@ -2,18 +2,25 @@ import {useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {useAppSelector} from '../../hooks/use-app-selector';
 import {setFilmId} from '../../store/application-data/application-data';
+import {getFilmById} from '../../store/films-data/selectors';
 
 import WatchListButton from '../watch-list-button/watch-list-button';
 import WatchStatusButton from '../watch-status-button/watch-status-button';
 import FavoriteStatusButton from '../favorite-status-button/favorite-status-button';
 
+import {FilmAdapted} from '../../types/film';
+import {formatDuration, formatReleaseFullData, formatListProperties} from '../../utils/utils';
 import {TypeButton} from '../../constants';
 
 
 function FilmDetails(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchFilm = searchParams.get('film');
+
+  const film = useAppSelector((state) => getFilmById(state, searchFilm)) as FilmAdapted;
 
   useEffect(() => {
     let isMounted = true;
@@ -42,6 +49,8 @@ function FilmDetails(): JSX.Element {
     setSearchParams('');
   };
 
+  const {id, filmInfo} = film;
+
   return (
     <section className="film-details">
       <div className="film-details__inner">
@@ -51,68 +60,70 @@ function FilmDetails(): JSX.Element {
           </div>
           <div className="film-details__info-wrap">
             <div className="film-details__poster">
-              <img className="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="" />
+              <img className="film-details__poster-img" src={filmInfo.poster} width="338" height="500" alt={filmInfo.title} />
 
-              <p className="film-details__age">18+</p>
+              <p className="film-details__age">{filmInfo.ageRating}+</p>
             </div>
 
             <div className="film-details__info">
               <div className="film-details__info-head">
                 <div className="film-details__title-wrap">
-                  <h3 className="film-details__title">The Great Flamarion</h3>
-                  <p className="film-details__title-original">Original: The Great Flamarion</p>
+                  <h3 className="film-details__title">{filmInfo.title}</h3>
+                  <p className="film-details__title-original">Original: {filmInfo.alternativeTitle}</p>
                 </div>
 
                 <div className="film-details__rating">
-                  <p className="film-details__total-rating">8.9</p>
+                  <p className="film-details__total-rating">{filmInfo.totalRating}</p>
                 </div>
               </div>
 
               <table className="film-details__table">
-                <tr className="film-details__row">
-                  <td className="film-details__term">Director</td>
-                  <td className="film-details__cell">Anthony Mann</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Writers</td>
-                  <td className="film-details__cell">Anne Wigton, Heinz Herald, Richard Weil</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Actors</td>
-                  <td className="film-details__cell">Erich von Stroheim, Mary Beth Hughes, Dan Duryea</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Release Date</td>
-                  <td className="film-details__cell">30 March 1945</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Runtime</td>
-                  <td className="film-details__cell">1h 18m</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Country</td>
-                  <td className="film-details__cell">USA</td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Genres</td>
-                  <td className="film-details__cell">
-                    <span className="film-details__genre">Drama</span>
-                    <span className="film-details__genre">Film-Noir</span>
-                    <span className="film-details__genre">Mystery</span>
-                  </td>
-                </tr>
+                <tbody>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Director</td>
+                    <td className="film-details__cell">{filmInfo.director}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Writers</td>
+                    <td className="film-details__cell">{formatListProperties(filmInfo.writers)}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Actors</td>
+                    <td className="film-details__cell">{formatListProperties(filmInfo.actors)}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Release Date</td>
+                    <td className="film-details__cell">{formatReleaseFullData(filmInfo.release.date)}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Runtime</td>
+                    <td className="film-details__cell">{formatDuration(filmInfo.runtime)}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Country</td>
+                    <td className="film-details__cell">{filmInfo.release.releaseCountry}</td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">
+                      {filmInfo.genre.length > 1 ? 'Genres' : 'Genre'}
+                    </td>
+                    <td className="film-details__cell">
+                      {filmInfo.genre.map((item) => (
+                        <span className="film-details__genre" key={item}>{item}</span>
+                      ))}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
 
-              <p className="film-details__film-description">
-                The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea).
-              </p>
+              <p className="film-details__film-description">{filmInfo.description}</p>
             </div>
           </div>
 
           <section className="film-details__controls">
-            <WatchListButton filmId={''} type={TypeButton.Details} />
-            <WatchStatusButton filmId={''} type={TypeButton.Details} />
-            <FavoriteStatusButton filmId={''} type={TypeButton.Details} />
+            <WatchListButton filmId={id} type={TypeButton.Details} />
+            <WatchStatusButton filmId={id} type={TypeButton.Details} />
+            <FavoriteStatusButton filmId={id} type={TypeButton.Details} />
           </section>
         </div>
 

@@ -9,7 +9,7 @@ import WatchStatusButton from '../watch-status-button/watch-status-button';
 import FavoriteStatusButton from '../favorite-status-button/favorite-status-button';
 
 import {FilmAdapted} from '../../types/film';
-import {formatDuration, formatReleaseData, formatGenre, formatDescription} from '../../utils/utils';
+import {formatDuration, formatReleaseData, formatListProperties, formatDescription} from '../../utils/utils';
 import {TypeButton} from '../../constants';
 
 
@@ -42,7 +42,7 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
         <p className="film-card__info">
           <span className="film-card__year">{formatReleaseData(release.date)}</span>
           <span className="film-card__duration">{formatDuration(runtime)}</span>
-          <span className="film-card__genre">{formatGenre(genre)}</span>
+          <span className="film-card__genre">{formatListProperties(genre)}</span>
         </p>
         <img className="film-card__poster" src={poster} width="232" height="342" alt={title} />
         <p className="film-card__description">{formatDescription(description)}</p>
