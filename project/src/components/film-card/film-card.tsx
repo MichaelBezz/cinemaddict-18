@@ -18,7 +18,11 @@ type FilmCardProps = {
 };
 
 function FilmCard({film}: FilmCardProps): JSX.Element {
-  const {id, filmInfo: {title, totalRating, poster, release, runtime, genre, description}} = film;
+  const {
+    id,
+    filmInfo: {title, totalRating, poster, release, runtime, genre, description},
+    comments
+  } = film;
 
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
@@ -46,7 +50,7 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
         </p>
         <img className="film-card__poster" src={poster} width="232" height="342" alt={title} />
         <p className="film-card__description">{formatDescription(description)}</p>
-        <span className="film-card__comments">5 comments</span>
+        <span className="film-card__comments">{comments.length} comments</span>
       </Link>
       <div className="film-card__controls">
         <WatchListButton filmId={id} type={TypeButton.Card} />

@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 
 export const formatDuration = (minute: number): string =>
@@ -11,6 +13,9 @@ export const formatReleaseData = (data: string): string =>
 
 export const formatReleaseFullData = (data: string): string =>
   dayjs(data).format('D MMMM YYYY');
+
+export const formatCommentData = (data: string): string =>
+  dayjs(data).fromNow();
 
 export const formatListProperties = (list: string[]): string =>
   list.join(', ');
