@@ -9,10 +9,10 @@ import Footer from '../../components/footer/footer';
 
 
 function Layout(): JSX.Element {
-  const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
+  const isFilmDisplayed = useAppSelector(getIsFilmDisplayed);
 
   return (
-    <div className={cn('wrapper', {'hide-overflow': isDetailsDisplayed})}>
+    <div className={cn('wrapper', {'hide-overflow': isFilmDisplayed})}>
       <Header />
 
       <main className="wrapper__main main">

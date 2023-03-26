@@ -13,3 +13,8 @@ export enum Reducer {
   Films = 'FILMS',
   Comments = 'COMMENTS'
 }
+
+export enum TypeButton {
+  Card = 'card',
+  Details = 'details'
+}

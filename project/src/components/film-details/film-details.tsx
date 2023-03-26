@@ -4,6 +4,12 @@ import {useSearchParams} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {setFilmId} from '../../store/application-data/application-data';
 
+import WatchListButton from '../watch-list-button/watch-list-button';
+import WatchStatusButton from '../watch-status-button/watch-status-button';
+import FavoriteStatusButton from '../favorite-status-button/favorite-status-button';
+
+import {TypeButton} from '../../constants';
+
 
 function FilmDetails(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -104,9 +110,9 @@ function FilmDetails(): JSX.Element {
           </div>
 
           <section className="film-details__controls">
-            <button type="button" className="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-            <button type="button" className="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-            <button type="button" className="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+            <WatchListButton filmId={''} type={TypeButton.Details} />
+            <WatchStatusButton filmId={''} type={TypeButton.Details} />
+            <FavoriteStatusButton filmId={''} type={TypeButton.Details} />
           </section>
         </div>
 

@@ -4,8 +4,13 @@ import {Link, useSearchParams} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {setFilmId} from '../../store/application-data/application-data';
 
+import WatchListButton from '../watch-list-button/watch-list-button';
+import WatchStatusButton from '../watch-status-button/watch-status-button';
+import FavoriteStatusButton from '../favorite-status-button/favorite-status-button';
+
 import {FilmAdapted} from '../../types/film';
 import {formatDuration, formatReleaseData, formatGenre, formatDescription} from '../../utils/utils';
+import {TypeButton} from '../../constants';
 
 
 type FilmCardProps = {
@@ -44,9 +49,9 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
         <span className="film-card__comments">5 comments</span>
       </Link>
       <div className="film-card__controls">
-        <button className="film-card__controls-item film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-        <button className="film-card__controls-item film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-        <button className="film-card__controls-item film-card__controls-item--favorite" type="button">Mark as favorite</button>
+        <WatchListButton filmId={id} type={TypeButton.Card} />
+        <WatchStatusButton filmId={id} type={TypeButton.Card} />
+        <FavoriteStatusButton filmId={id} type={TypeButton.Card} />
       </div>
     </article>
   );
