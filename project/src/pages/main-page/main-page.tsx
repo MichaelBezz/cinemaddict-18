@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchFilms} from '../../store/api-actions';
-import {getAllFilms} from '../../store/films-data/selectors';
+import {getSelectedFilms} from '../../store/films-data/selectors';
 import {getIsFilmDisplayed} from '../../store/application-data/selectors';
 
 import Navigation from '../../components/navigation/navigation';
@@ -19,7 +19,7 @@ function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const [filmCount, setFilmCount] = useState<number>(0);
 
-  const films = useAppSelector(getAllFilms);
+  const films = useAppSelector(getSelectedFilms);
   const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
 
   useEffect(() => {
