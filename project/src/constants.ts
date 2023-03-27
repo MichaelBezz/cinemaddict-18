@@ -14,6 +14,19 @@ export enum Reducer {
   Comments = 'COMMENTS'
 }
 
+export enum Filter {
+  All = 'all',
+  WatchList = 'watchlist',
+  History = 'history',
+  Favorites = 'favorites'
+}
+
+export enum Sort {
+  Default = 'default',
+  Date = 'date',
+  Rating = 'rating'
+}
+
 export enum TypeButton {
   Card = 'card',
   Details = 'details'
