@@ -1,5 +1,5 @@
 import {store} from '../store/store';
-import {FilmId, Films} from './film';
+import {FilmId, FilmsAdapted} from './film';
 import {Comments} from './comment';
 
 
@@ -12,7 +12,7 @@ export type ApplicationDataState = {
 };
 
 export type FilmsDataState = {
-  films: Films;
+  films: FilmsAdapted;
   isLoading: boolean;
 };
 

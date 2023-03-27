@@ -1,13 +1,16 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {toast} from 'react-toastify';
+
+import {adaptFilmToClient} from '../services/film-adapter';
+
 import {AppDispatch, State} from '../types/state';
-import {FilmId, Films, Film} from '../types/film';
+import {FilmId, Films, Film, FilmsAdapted} from '../types/film';
 import {CommentId, Comments} from '../types/comment';
 import {Reducer, APIRoute} from '../constants';
 
 
-export const fetchFilms = createAsyncThunk<Films | void, undefined, {
+export const fetchFilms = createAsyncThunk<FilmsAdapted | void, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -16,7 +19,7 @@ export const fetchFilms = createAsyncThunk<Films | void, undefined, {
   async (_arg, {extra: api}) => {
     try {
       const {data} = await api.get<Films>(`${APIRoute.Films}`);
-      return data;
+      return data.map(adaptFilmToClient);
     }
     catch {
       toast.error('Couldn\'t download films');
