@@ -1,11 +1,15 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {getFilter} from '../application-data/selectors';
-
+import {getFilter, getSort} from '../application-data/selectors';
 import {State} from '../../types/state';
-import {FilmId} from '../../types/film';
-import {FilmsAdapted, FilmAdapted} from '../../types/film';
-import {Reducer, FilterType} from '../../constants';
+import {FilmId, FilmsAdapted, FilmAdapted} from '../../types/film';
+import {Reducer, FilterType, SortType} from '../../constants';
 
+
+const compare: Record<SortType, (film: FilmAdapted, nextFilm: FilmAdapted) => number> = {
+  [SortType.Default]: () => 0,
+  [SortType.Date]: (film, nextFilm) => Date.parse(nextFilm.filmInfo.release.date) - Date.parse(film.filmInfo.release.date),
+  [SortType.Rating]: (film, nextFilm) => nextFilm.filmInfo.totalRating - film.filmInfo.totalRating
+};
 
 export const getAllFilms = (state: State): FilmsAdapted | [] => state[Reducer.Films].films;
 export const getIsLoading = (state: State): boolean => state[Reducer.Films].isLoading;
@@ -22,7 +26,8 @@ export const getFilmsByFilter = createSelector(
 );
 
 export const getSelectedFilms = createSelector(
-  [getAllFilms, getFilter],
-  (films, filter): FilmsAdapted => films
+  [getAllFilms, getFilter, getSort],
+  (films, filter, sort): FilmsAdapted => films
     .filter((film) => filter === FilterType.All ? FilterType.All : film.userDetails[filter])
+    .sort(compare[sort])
 );

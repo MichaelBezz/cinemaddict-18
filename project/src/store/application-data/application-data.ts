@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {ApplicationDataState} from '../../types/state';
 import {FilmId} from '../../types/film';
-import {Reducer, Filter, Sort} from '../../constants';
+import {Reducer, FilterType, SortType} from '../../constants';
 
 
 const initialState: ApplicationDataState = {
   filmId: null,
   isFilmDisplayed: false,
-  filter: Filter.All,
-  sort: Sort.Default
+  filter: FilterType.All,
+  sort: SortType.Default
 };
 
 export const applicationData = createSlice({
@@ -19,10 +19,10 @@ export const applicationData = createSlice({
       state.filmId = action.payload;
       state.isFilmDisplayed = action.payload !== null;
     },
-    setFilter: (state, action: PayloadAction<Filter>) => {
+    setFilter: (state, action: PayloadAction<FilterType>) => {
       state.filter = action.payload;
     },
-    setSort: (state, action: PayloadAction<Sort>) => {
+    setSort: (state, action: PayloadAction<SortType>) => {
       state.sort = action.payload;
     }
   }
