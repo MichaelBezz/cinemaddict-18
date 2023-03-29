@@ -13,7 +13,7 @@ import CommentList from '../comment-list/comment-list';
 
 import {FilmAdapted} from '../../types/film';
 import {formatDuration, formatReleaseFullData, formatListProperties} from '../../utils/utils';
-import {TypeButton} from '../../constants';
+import {ButtonType} from '../../constants';
 
 
 function FilmDetails(): JSX.Element {
@@ -138,9 +138,9 @@ function FilmDetails(): JSX.Element {
           </div>
 
           <section className="film-details__controls">
-            <WatchListButton filmId={id} type={TypeButton.Details} />
-            <WatchStatusButton filmId={id} type={TypeButton.Details} />
-            <FavoriteStatusButton filmId={id} type={TypeButton.Details} />
+            <WatchListButton film={film} type={ButtonType.Details} />
+            <WatchStatusButton film={film} type={ButtonType.Details} />
+            <FavoriteStatusButton film={film} type={ButtonType.Details} />
           </section>
         </div>
 

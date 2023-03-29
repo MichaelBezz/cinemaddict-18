@@ -10,7 +10,7 @@ import FavoriteStatusButton from '../favorite-status-button/favorite-status-butt
 
 import {FilmAdapted} from '../../types/film';
 import {formatDuration, formatReleaseData, formatListProperties, formatDescription} from '../../utils/utils';
-import {TypeButton} from '../../constants';
+import {ButtonType} from '../../constants';
 
 
 type FilmCardProps = {
@@ -53,9 +53,9 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
         <span className="film-card__comments">{comments.length} comments</span>
       </Link>
       <div className="film-card__controls">
-        <WatchListButton filmId={id} type={TypeButton.Card} />
-        <WatchStatusButton filmId={id} type={TypeButton.Card} />
-        <FavoriteStatusButton filmId={id} type={TypeButton.Card} />
+        <WatchListButton film={film} type={ButtonType.Card} />
+        <WatchStatusButton film={film} type={ButtonType.Card} />
+        <FavoriteStatusButton film={film} type={ButtonType.Card} />
       </div>
     </article>
   );

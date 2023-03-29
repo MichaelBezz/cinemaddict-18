@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchFilms} from '../api-actions';
+import {fetchFilms, putFilm} from '../api-actions';
 import {FilmsDataState} from '../../types/state';
 import {Reducer} from '../../constants';
 
@@ -25,6 +25,12 @@ export const filmsData = createSlice({
       .addCase(fetchFilms.rejected, (state) => {
         state.isLoading = false;
         state.films = [];
+      })
+      .addCase(putFilm.fulfilled, (state, {payload: film}) => {
+        if (film) {
+          const index = state.films.findIndex((item) => item.id === film.id);
+          state.films.splice(index, 1, film);
+        }
       });
   }
 });

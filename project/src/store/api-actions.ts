@@ -1,11 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {toast} from 'react-toastify';
-
-import {adaptFilmToClient} from '../services/film-adapter';
-
+import {adaptFilmToClient, adaptFilmToServer} from '../services/film-adapter';
 import {AppDispatch, State} from '../types/state';
-import {FilmId, Films, Film, FilmsAdapted} from '../types/film';
+import {FilmId, Films, Film, FilmsAdapted, FilmAdapted} from '../types/film';
 import {CommentId, Comments} from '../types/comment';
 import {Reducer, APIRoute} from '../constants';
 
@@ -27,16 +25,16 @@ export const fetchFilms = createAsyncThunk<FilmsAdapted | void, undefined, {
   }
 );
 
-export const putFilm = createAsyncThunk<Film | void, FilmId, {
+export const putFilm = createAsyncThunk<FilmAdapted | void, FilmAdapted, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   `${Reducer.Films}/putFilm`,
-  async (filmId, {extra: api}) => {
+  async (film, {extra: api}) => {
     try {
-      const {data} = await api.put<Film>(`${APIRoute.Films}/${filmId}`);
-      return data;
+      const {data} = await api.put<Film>(`${APIRoute.Films}/${film.id}`, adaptFilmToServer(film));
+      return adaptFilmToClient(data);
     }
     catch {
       toast.error('Couldn\'t change the film');

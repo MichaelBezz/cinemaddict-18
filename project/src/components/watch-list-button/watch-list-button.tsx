@@ -1,28 +1,47 @@
 import cn from 'classnames';
-import {FilmId} from '../../types/film';
-import {TypeButton} from '../../constants';
+
+import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {putFilm} from '../../store/api-actions';
+
+import {FilmAdapted} from '../../types/film';
+import {ButtonType} from '../../constants';
 
 
 type WatchListButtonProps = {
-  filmId: FilmId;
-  type: TypeButton;
+  film: FilmAdapted;
+  type: ButtonType;
 };
 
-function WatchListButton({filmId, type}: WatchListButtonProps): JSX.Element {
-  const isCardType = type === TypeButton.Card;
-  const isDetailsType = type === TypeButton.Details;
+function WatchListButton({film, type}: WatchListButtonProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const isCardType = type === ButtonType.Card;
+  const isCardTypeActive = isCardType && film.userDetails.watchlist;
+  const isDetailsType = type === ButtonType.Details;
+  const isDetailsTypeActive = isDetailsType && film.userDetails.watchlist;
+
+  const handleButtonClick = () => {
+    dispatch(putFilm({
+      ...film,
+      userDetails: {
+        ...film.userDetails,
+        watchlist: !film.userDetails.watchlist
+      }
+    }));
+  };
 
   return (
     <button
       className={cn({
         'film-card__controls-item film-card__controls-item--add-to-watchlist': isCardType,
-        'film-card__controls-item--active': isCardType && false,
+        'film-card__controls-item--active': isCardTypeActive,
         'film-details__control-button film-details__control-button--watchlist': isDetailsType,
-        'film-details__control-button--active': isDetailsType && false
+        'film-details__control-button--active': isDetailsTypeActive
       })}
       id="watchlist"
       name="watchlist"
       type="button"
+      onClick={handleButtonClick}
     >
       Add to watchlist
     </button>
