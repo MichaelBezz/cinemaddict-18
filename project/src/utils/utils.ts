@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import {FilterType} from '../constants';
+
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -39,5 +41,19 @@ export const getUserRating = (rating: number): string => {
     case rating >= 21:
       return 'Movie Buff';
     default: return '';
+  }
+};
+
+export const getFilmListTitle = (filter: FilterType, count: number) => {
+  switch (true) {
+    case filter === FilterType.All && count === 0:
+      return 'There are no movies in our database';
+    case filter === FilterType.WatchList && count === 0:
+      return 'There are no movies to watch now';
+    case filter === FilterType.AlreadyWatched && count === 0:
+      return 'There are no watched movies now';
+    case filter === FilterType.Favorite && count === 0:
+      return 'There are no favorite movies now';
+    default: return 'All movies. Upcoming';
   }
 };

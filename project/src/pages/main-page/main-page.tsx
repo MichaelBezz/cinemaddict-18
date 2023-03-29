@@ -1,17 +1,20 @@
+import cn from 'classnames';
 import {useEffect, useState} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchFilms} from '../../store/api-actions';
 import {getSelectedFilms, getFilmsBySort} from '../../store/films-data/selectors';
-import {getIsFilmDisplayed} from '../../store/application-data/selectors';
+import {getIsFilmDisplayed, getFilter} from '../../store/application-data/selectors';
 
 import Navigation from '../../components/navigation/navigation';
 import Sort from '../../components/sort/sort';
 import FilmList from '../../components/film-list/film-list';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import FilmDetails from '../../components/film-details/film-details';
-import { SortType } from '../../constants';
+
+import {getFilmListTitle} from '../../utils/utils';
+import {SortType} from '../../constants';
 
 
 const FILMS_PER_STEP = 5;
@@ -25,6 +28,8 @@ function MainPage(): JSX.Element {
   const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
   const topRatingFilms = useAppSelector((state) => getFilmsBySort(state, {sort: SortType.Rating, count: MAX_CARD}));
   const mostCommentedFilms = useAppSelector((state) => getFilmsBySort(state, {sort: SortType.Comment, count: MAX_CARD}));
+
+  const currentFilter = useAppSelector(getFilter);
 
   useEffect(() => {
     dispatch(fetchFilms());
@@ -55,7 +60,9 @@ function MainPage(): JSX.Element {
 
       <section className="films">
         <section className="films-list">
-          <h2 className="films-list__title visually-hidden">All movies. Upcoming</h2>
+          <h2 className={cn('films-list__title', {'visually-hidden': films.length})}>
+            {getFilmListTitle(currentFilter, films.length)}
+          </h2>
 
           <FilmList films={films.slice(0, filmCount)} />
 
