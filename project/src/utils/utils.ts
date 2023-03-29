@@ -33,11 +33,11 @@ export const formatDescription = (description: string, maxLength = 139) => {
 export const getUserRating = (rating: number): string => {
   switch (true) {
     case rating >= 1 && rating < 11:
-      return 'novice';
+      return 'Novice';
     case rating >= 11 && rating < 21:
-      return 'fan';
+      return 'Fan';
     case rating >= 21:
-      return 'movie buff';
+      return 'Movie Buff';
     default: return '';
   }
 };

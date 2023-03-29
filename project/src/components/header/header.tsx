@@ -6,7 +6,7 @@ function Header(): JSX.Element {
     <header className="wrapper__header header">
       <h1 className="header__logo logo">Cinemaddict</h1>
 
-      <Profile/>
+      <Profile />
     </header>
   );
 }
