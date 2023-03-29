@@ -24,7 +24,8 @@ export enum FilterType {
 export enum SortType {
   Default = 'default',
   Date = 'date',
-  Rating = 'rating'
+  Rating = 'rating',
+  Comment = 'comment'
 }
 
 export enum ButtonType {
