@@ -30,6 +30,7 @@ function MainPage(): JSX.Element {
   const mostCommentedFilms = useAppSelector((state) => getFilmsBySort(state, {sort: SortType.Comment, count: MAX_CARD}));
 
   const currentFilter = useAppSelector(getFilter);
+  const numberOfFilms = films.length;
 
   useEffect(() => {
     dispatch(fetchFilms());
@@ -39,34 +40,35 @@ function MainPage(): JSX.Element {
     let isMounted = true;
 
     if (isMounted) {
-      setFilmCount(Math.min(FILMS_PER_STEP, films.length));
+      setFilmCount(Math.min(FILMS_PER_STEP, numberOfFilms));
     }
 
     return () => {
       isMounted = false;
     };
-  }, [films]);
+  }, [numberOfFilms]);
 
   const handleShowMoreButtonClick = () => {
     setFilmCount((prevFilmsDisplayed) =>
-      Math.min(prevFilmsDisplayed + FILMS_PER_STEP, films.length)
+      Math.min(prevFilmsDisplayed + FILMS_PER_STEP, numberOfFilms)
     );
   };
 
   return (
     <>
       <Navigation />
-      <Sort />
+
+      {numberOfFilms ? <Sort /> : null}
 
       <section className="films">
         <section className="films-list">
-          <h2 className={cn('films-list__title', {'visually-hidden': films.length})}>
-            {getFilmListTitle(currentFilter, films.length)}
+          <h2 className={cn('films-list__title', {'visually-hidden': numberOfFilms})}>
+            {getFilmListTitle(currentFilter, numberOfFilms)}
           </h2>
 
           <FilmList films={films.slice(0, filmCount)} />
 
-          {films.length > filmCount && (
+          {numberOfFilms > filmCount && (
             <ShowMoreButton onClick={handleShowMoreButtonClick} />
           )}
         </section>

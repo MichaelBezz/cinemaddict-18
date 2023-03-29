@@ -43,7 +43,7 @@ function FavoriteStatusButton({film, type}: FavoriteStatusButtonProps): JSX.Elem
       type="button"
       onClick={handleButtonClick}
     >
-      Mark as favorites
+      Add to favorites
     </button>
   );
 }

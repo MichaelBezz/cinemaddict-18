@@ -43,7 +43,7 @@ function WatchStatusButton({film, type}: WatchStatusButtonProps): JSX.Element {
       type="button"
       onClick={handleButtonClick}
     >
-      Mark as watched
+      Already watched
     </button>
   );
 }
