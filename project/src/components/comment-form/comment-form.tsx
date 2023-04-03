@@ -1,17 +1,24 @@
 import {Fragment, useState, ChangeEvent, FormEvent} from 'react';
+
+import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {postComment} from '../../store/api-actions';
+
+import {FilmId} from '../../types/film';
+import {LocalComment} from '../../types/comment';
 import {EmojiType} from '../../constants';
 
 
-type FormData = {
-  emoji: string;
-  comment: string;
-}
+type CommentFormProps = {
+  filmId: FilmId;
+};
 
 const emojiTypes = Object.values(EmojiType);
 
-function CommentForm(): JSX.Element {
-  const [formData, setFormData] = useState<FormData>({
-    emoji: '',
+function CommentForm({filmId}: CommentFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState<LocalComment>({
+    emotion: '',
     comment: ''
   });
 
@@ -23,8 +30,13 @@ function CommentForm(): JSX.Element {
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
 
+    dispatch(postComment({
+      filmId,
+      comment: formData
+    }));
+
     setFormData({
-      emoji: '',
+      emotion: '',
       comment: ''
     });
   };
@@ -32,8 +44,8 @@ function CommentForm(): JSX.Element {
   return (
     <form className="film-details__new-comment" action="#" method="post" onSubmit={handleFormSubmit}>
       <div className="film-details__add-emoji-label">
-        {formData.emoji && (
-          <img src={`./images/emoji/${formData.emoji}.png`} width="55" height="55" alt={`emoji-${formData.emoji}`} />
+        {formData.emotion && (
+          <img src={`./images/emoji/${formData.emotion}.png`} width="55" height="55" alt={`emoji-${formData.emotion}`} />
         )}
       </div>
 
@@ -54,11 +66,11 @@ function CommentForm(): JSX.Element {
             <input
               className="film-details__emoji-item visually-hidden"
               id={`emoji-${type}`}
-              name="emoji"
+              name="emotion"
               type="radio"
               value={type}
               onChange={handleFieldChange}
-              checked={type === formData.emoji}
+              checked={type === formData.emotion}
             />
 
             <label className="film-details__emoji-label" htmlFor={`emoji-${type}`}>
@@ -67,6 +79,10 @@ function CommentForm(): JSX.Element {
           </Fragment>
         ))}
       </div>
+
+      <button className="film-details__comment-post" type="submit">
+        Отправить
+      </button>
     </form>
   );
 }

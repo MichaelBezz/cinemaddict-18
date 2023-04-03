@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchComments} from '../api-actions';
+import {fetchComments, postComment} from '../api-actions';
 import {CommentsDataState} from '../../types/state';
 import {Reducer} from '../../constants';
 
@@ -25,6 +25,13 @@ export const commentsData = createSlice({
       .addCase(fetchComments.rejected, (state) => {
         state.isLoading = false;
         state.comments = [];
+      })
+      .addCase(postComment.fulfilled, (state, action) => {
+        const comments = action.payload?.comments;
+
+        if (comments) {
+          state.comments = comments;
+        }
       });
   }
 });

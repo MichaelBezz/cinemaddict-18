@@ -1,5 +1,10 @@
 export type CommentId = string;
 
+export type LocalComment = {
+  emotion: string;
+  comment: string;
+};
+
 export type Comment = {
   id: CommentId;
   author: string;

@@ -49,7 +49,7 @@ function CommentList({filmId}: CommentListProps): JSX.Element {
         ))}
       </ul>
 
-      <CommentForm />
+      <CommentForm filmId={filmId} />
     </section>
   );
 }

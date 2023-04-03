@@ -4,7 +4,7 @@ import {toast} from 'react-toastify';
 import {adaptFilmToClient, adaptFilmToServer} from '../services/film-adapter';
 import {AppDispatch, State} from '../types/state';
 import {FilmId, Films, Film, FilmsAdapted, FilmAdapted} from '../types/film';
-import {CommentId, Comments} from '../types/comment';
+import {CommentId, LocalComment, Comments} from '../types/comment';
 import {Reducer, APIRoute} from '../constants';
 
 
@@ -59,16 +59,31 @@ export const fetchComments = createAsyncThunk<Comments | void, FilmId, {
   }
 );
 
-export const postComment = createAsyncThunk<Comments | void, FilmId, {
+export const postComment = createAsyncThunk<
+{
+  movie: FilmAdapted;
+  comments: Comments;
+} | void,
+{
+  filmId: FilmId;
+  comment: LocalComment;
+},
+{
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   `${Reducer.Comments}/postComment`,
-  async (filmId, {extra: api}) => {
+  async ({filmId, comment}, {extra: api}) => {
     try {
-      const {data} = await api.post<Comments>(`${APIRoute.Comments}/${filmId}`);
-      return data;
+      const {data} = await api.post<{
+        movie: Film;
+        comments: Comments;
+      }>(`${APIRoute.Comments}/${filmId}`, comment);
+      return ({
+        movie: adaptFilmToClient(data.movie),
+        comments: data.comments
+      });
     }
     catch {
       toast.error('Couldn\'t add comment');
