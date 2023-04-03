@@ -27,8 +27,6 @@ function FilmDetails(): JSX.Element {
     let isMounted = true;
 
     const handleDocumentKeydown = (event: KeyboardEvent) => {
-      event.preventDefault();
-
       if (event.key === 'Escape') {
         dispatch(setFilmId(null));
         setSearchParams('');

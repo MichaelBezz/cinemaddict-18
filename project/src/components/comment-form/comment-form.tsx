@@ -1,32 +1,71 @@
+import {Fragment, useState, ChangeEvent, FormEvent} from 'react';
+import {EmojiType} from '../../constants';
+
+
+type FormData = {
+  emoji: string;
+  comment: string;
+}
+
+const emojiTypes = Object.values(EmojiType);
+
 function CommentForm(): JSX.Element {
+  const [formData, setFormData] = useState<FormData>({
+    emoji: '',
+    comment: ''
+  });
+
+  const handleFieldChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name, value} = event.target;
+    setFormData({...formData, [name]: value});
+  };
+
+  const handleFormSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    setFormData({
+      emoji: '',
+      comment: ''
+    });
+  };
+
   return (
-    <form className="film-details__new-comment" action="" method="get">
-      <div className="film-details__add-emoji-label"></div>
+    <form className="film-details__new-comment" action="#" method="post" onSubmit={handleFormSubmit}>
+      <div className="film-details__add-emoji-label">
+        {formData.emoji && (
+          <img src={`./images/emoji/${formData.emoji}.png`} width="55" height="55" alt={`emoji-${formData.emoji}`} />
+        )}
+      </div>
 
       <label className="film-details__comment-label">
-        <textarea className="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+        <textarea
+          className="film-details__comment-input"
+          name="comment"
+          value={formData.comment}
+          onChange={handleFieldChange}
+          placeholder="Select reaction below and write comment here"
+        >
+        </textarea>
       </label>
 
       <div className="film-details__emoji-list">
-        <input className="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" />
-        <label className="film-details__emoji-label" htmlFor="emoji-smile">
-          <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji" />
-        </label>
+        {emojiTypes.map((type) => (
+          <Fragment key={type}>
+            <input
+              className="film-details__emoji-item visually-hidden"
+              id={`emoji-${type}`}
+              name="emoji"
+              type="radio"
+              value={type}
+              onChange={handleFieldChange}
+              checked={type === formData.emoji}
+            />
 
-        <input className="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" />
-        <label className="film-details__emoji-label" htmlFor="emoji-sleeping">
-          <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji" />
-        </label>
-
-        <input className="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" />
-        <label className="film-details__emoji-label" htmlFor="emoji-puke">
-          <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji" />
-        </label>
-
-        <input className="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" />
-        <label className="film-details__emoji-label" htmlFor="emoji-angry">
-          <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji" />
-        </label>
+            <label className="film-details__emoji-label" htmlFor={`emoji-${type}`}>
+              <img src={`./images/emoji/${type}.png`} width="30" height="30" alt={`emoji-${type}`} />
+            </label>
+          </Fragment>
+        ))}
       </div>
     </form>
   );

@@ -32,3 +32,10 @@ export enum ButtonType {
   Card = 'card',
   Details = 'details'
 }
+
+export enum EmojiType {
+  Smile = 'smile',
+  Sleeping = 'sleeping',
+  Puke = 'puke',
+  Angry = 'angry'
+}
