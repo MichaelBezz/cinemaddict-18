@@ -2,7 +2,8 @@ import {useEffect} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
-import {fetchComments} from '../../store/api-actions';
+import {fetchComments, deleteComment} from '../../store/api-actions';
+import {deleteCommentId} from '../../store/comments-data/comments-data';
 import {getComments} from '../../store/comments-data/selectors';
 
 import CommentForm from '../comment-form/comment-form';
@@ -42,7 +43,16 @@ function CommentList({filmId}: CommentListProps): JSX.Element {
               <p className="film-details__comment-info">
                 <span className="film-details__comment-author">{comment.author}</span>
                 <span className="film-details__comment-day">{formatCommentData(comment.date)}</span>
-                <button className="film-details__comment-delete" type="button">Delete</button>
+                <button
+                  className="film-details__comment-delete"
+                  type="button"
+                  onClick={() => {
+                    dispatch(deleteComment(comment.id));
+                    dispatch(deleteCommentId({filmId, commentId: comment.id}));
+                  }}
+                >
+                  Delete
+                </button>
               </p>
             </div>
           </li>
