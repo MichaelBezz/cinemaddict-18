@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchComments, deleteComment} from '../../store/api-actions';
-import {getComments, getIsDisabled} from '../../store/comments-data/selectors';
+import {getComments, getIsLoading, getIsDisabled} from '../../store/comments-data/selectors';
 
 import CommentForm from '../comment-form/comment-form';
 
@@ -18,11 +18,17 @@ type CommentListProps = {
 function CommentList({filmId}: CommentListProps): JSX.Element {
   const dispatch = useAppDispatch();
   const comments = useAppSelector(getComments);
+  const isLoading = useAppSelector(getIsLoading);
   const isDisabled = useAppSelector(getIsDisabled);
 
   useEffect(() => {
     dispatch(fetchComments(filmId));
   }, [dispatch, filmId]);
+
+
+  if (isLoading) {
+    return (<h3 className="film-details__comments-title">Loading...</h3>);
+  }
 
   return (
     <section className="film-details__comments-wrap">
