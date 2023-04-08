@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchFilms} from '../../store/api-actions';
-import {getSelectedFilms, getFilmsBySort} from '../../store/films-data/selectors';
+import {getSelectedFilms, getFilmsBySort, getIsLoading} from '../../store/films-data/selectors';
 import {getIsFilmDisplayed, getFilter} from '../../store/application-data/selectors';
 
 import Navigation from '../../components/navigation/navigation';
@@ -24,13 +24,18 @@ function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const [filmCount, setFilmCount] = useState<number>(FILMS_PER_STEP);
 
+  const currentFilter = useAppSelector(getFilter);
+
   const films = useAppSelector(getSelectedFilms);
-  const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
   const topRatingFilms = useAppSelector((state) => getFilmsBySort(state, {sort: SortType.Rating, count: MAX_CARD}));
   const mostCommentedFilms = useAppSelector((state) => getFilmsBySort(state, {sort: SortType.Comment, count: MAX_CARD}));
 
-  const currentFilter = useAppSelector(getFilter);
+  const isFilmsLoading = useAppSelector(getIsLoading);
+  const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
+
   const numberOfFilms = films.length;
+  const numberOfTopRatingFilms = topRatingFilms.length;
+  const numberOfMostCommentedFilms = mostCommentedFilms.length;
 
   useEffect(() => {
     dispatch(fetchFilms());
@@ -55,7 +60,7 @@ function MainPage(): JSX.Element {
       <section className="films">
         <section className="films-list">
           <h2 className={cn('films-list__title', {'visually-hidden': numberOfFilms})}>
-            {getFilmListTitle(currentFilter, numberOfFilms)}
+            {getFilmListTitle(currentFilter, numberOfFilms, isFilmsLoading)}
           </h2>
 
           <FilmList films={films.slice(0, filmCount)} />
@@ -65,17 +70,19 @@ function MainPage(): JSX.Element {
           )}
         </section>
 
-        <section className="films-list films-list--extra">
-          <h2 className="films-list__title">Top rated</h2>
+        {numberOfTopRatingFilms && !isFilmsLoading ? (
+          <section className="films-list films-list--extra">
+            <h2 className="films-list__title">Top rated</h2>
+            <FilmList films={topRatingFilms} />
+          </section>
+        ) : null}
 
-          <FilmList films={topRatingFilms} />
-        </section>
-
-        <section className="films-list films-list--extra">
-          <h2 className="films-list__title">Most commented</h2>
-
-          <FilmList films={mostCommentedFilms} />
-        </section>
+        {numberOfMostCommentedFilms && !isFilmsLoading ? (
+          <section className="films-list films-list--extra">
+            <h2 className="films-list__title">Most commented</h2>
+            <FilmList films={mostCommentedFilms} />
+          </section>
+        ) : null}
       </section>
 
       {isDetailsDisplayed && (

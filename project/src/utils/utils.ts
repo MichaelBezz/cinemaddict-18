@@ -44,15 +44,17 @@ export const getUserRating = (rating: number): string => {
   }
 };
 
-export const getFilmListTitle = (filter: FilterType, count: number) => {
+export const getFilmListTitle = (filter: FilterType, count: number, loading: boolean) => {
   switch (true) {
-    case filter === FilterType.All && count === 0:
+    case loading:
+      return 'Loading...';
+    case !loading && filter === FilterType.All && count === 0:
       return 'There are no movies in our database';
-    case filter === FilterType.WatchList && count === 0:
+    case !loading && filter === FilterType.WatchList && count === 0:
       return 'There are no movies to watch now';
-    case filter === FilterType.AlreadyWatched && count === 0:
+    case !loading && filter === FilterType.AlreadyWatched && count === 0:
       return 'There are no watched movies now';
-    case filter === FilterType.Favorite && count === 0:
+    case !loading && filter === FilterType.Favorite && count === 0:
       return 'There are no favorite movies now';
     default: return 'All movies. Upcoming';
   }
