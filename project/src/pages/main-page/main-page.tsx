@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import {useEffect, useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
@@ -24,8 +23,6 @@ const MAX_CARD = 2;
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const [filmCount, setFilmCount] = useState<number>(FILMS_PER_STEP);
-  const [searchParams] = useSearchParams();
-  const searchFilter = searchParams.get('filter');
 
   const films = useAppSelector(getSelectedFilms);
   const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
@@ -41,7 +38,7 @@ function MainPage(): JSX.Element {
 
   useEffect(() => {
     setFilmCount(FILMS_PER_STEP);
-  }, [searchFilter]);
+  }, [currentFilter]);
 
   const handleShowMoreButtonClick = () => {
     setFilmCount((prevFilmCount) =>
