@@ -1,3 +1,4 @@
+import he from 'he';
 import {Fragment, useState, ChangeEvent, FormEvent} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
@@ -24,7 +25,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
 
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = event.target;
-    setFormData({...formData, [name]: value});
+    setFormData({...formData, [name]: he.encode(value)});
   };
 
   const handleFormSubmit = (event: FormEvent) => {
