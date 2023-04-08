@@ -8,11 +8,17 @@ import {CommentId, LocalComment, Comments} from '../types/comment';
 import {Reducer, APIRoute} from '../constants';
 
 
-export const fetchFilms = createAsyncThunk<FilmsAdapted | void, undefined, {
+type AsyncThunkConfig = {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
-}>(
+};
+
+export const fetchFilms = createAsyncThunk<
+FilmsAdapted | void,
+undefined,
+AsyncThunkConfig
+>(
   `${Reducer.Films}/fetchFilms`,
   async (_arg, {extra: api}) => {
     try {
@@ -25,11 +31,11 @@ export const fetchFilms = createAsyncThunk<FilmsAdapted | void, undefined, {
   }
 );
 
-export const putFilm = createAsyncThunk<FilmAdapted | void, FilmAdapted, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const putFilm = createAsyncThunk<
+FilmAdapted | void,
+FilmAdapted,
+AsyncThunkConfig
+>(
   `${Reducer.Films}/putFilm`,
   async (film, {extra: api}) => {
     try {
@@ -42,11 +48,11 @@ export const putFilm = createAsyncThunk<FilmAdapted | void, FilmAdapted, {
   }
 );
 
-export const fetchComments = createAsyncThunk<Comments | void, FilmId, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const fetchComments = createAsyncThunk<
+Comments | void,
+FilmId,
+AsyncThunkConfig
+>(
   `${Reducer.Comments}/fetchComments`,
   async (filmId, {extra: api}) => {
     try {
@@ -68,11 +74,8 @@ export const postComment = createAsyncThunk<
   filmId: FilmId;
   comment: LocalComment;
 },
-{
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+AsyncThunkConfig
+>(
   `${Reducer.Comments}/postComment`,
   async ({filmId, comment}, {extra: api}) => {
     try {
@@ -91,15 +94,22 @@ export const postComment = createAsyncThunk<
   }
 );
 
-export const deleteComment = createAsyncThunk<void, CommentId, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const deleteComment = createAsyncThunk<
+{
+  filmId: FilmId;
+  commentId: CommentId;
+} | void,
+{
+  filmId: FilmId;
+  commentId: CommentId;
+},
+AsyncThunkConfig
+>(
   `${Reducer.Comments}/deleteComment`,
-  async (commentId, {extra: api}) => {
+  async ({filmId, commentId}, {extra: api}) => {
     try {
       await api.delete(`${APIRoute.Comments}/${commentId}`);
+      return {filmId, commentId};
     }
     catch {
       toast.error('Couldn\'t delete comment');

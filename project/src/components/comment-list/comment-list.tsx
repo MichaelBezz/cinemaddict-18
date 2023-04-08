@@ -3,7 +3,6 @@ import {useEffect} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchComments, deleteComment} from '../../store/api-actions';
-import {deleteCommentId} from '../../store/comments-data/comments-data';
 import {getComments} from '../../store/comments-data/selectors';
 
 import CommentForm from '../comment-form/comment-form';
@@ -47,8 +46,7 @@ function CommentList({filmId}: CommentListProps): JSX.Element {
                   className="film-details__comment-delete"
                   type="button"
                   onClick={() => {
-                    dispatch(deleteComment(comment.id));
-                    dispatch(deleteCommentId({filmId, commentId: comment.id}));
+                    dispatch(deleteComment({filmId, commentId: comment.id}));
                   }}
                 >
                   Delete

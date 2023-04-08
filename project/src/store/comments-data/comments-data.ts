@@ -1,8 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {fetchComments, postComment} from '../api-actions';
+import {createSlice} from '@reduxjs/toolkit';
+import {deleteComment, fetchComments, postComment} from '../api-actions';
 import {CommentsDataState} from '../../types/state';
-import {CommentId} from '../../types/comment';
-import {FilmId} from '../../types/film';
 import {Reducer} from '../../constants';
 
 
@@ -14,12 +12,7 @@ const initialState: CommentsDataState = {
 export const commentsData = createSlice({
   name: Reducer.Comments,
   initialState,
-  reducers: {
-    deleteCommentId: (state, action: PayloadAction<{filmId: FilmId; commentId: CommentId}>) => {
-      const index = state.comments.findIndex((comment) => comment.id === action.payload.commentId);
-      state.comments.splice(index, 1);
-    }
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchComments.pending, (state) => {
@@ -34,13 +27,11 @@ export const commentsData = createSlice({
         state.comments = [];
       })
       .addCase(postComment.fulfilled, (state, action) => {
-        const comments = action.payload?.comments;
-
-        if (comments) {
-          state.comments = comments;
-        }
+        state.comments = action.payload?.comments ?? [];
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        const index = state.comments.findIndex((comment) => comment.id === action.payload?.commentId);
+        state.comments.splice(index, 1);
       });
   }
 });
-
-export const {deleteCommentId} = commentsData.actions;

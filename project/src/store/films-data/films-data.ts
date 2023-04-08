@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchFilms, putFilm, postComment} from '../api-actions';
-import {deleteCommentId} from '../comments-data/comments-data';
+import {fetchFilms, putFilm, postComment, deleteComment} from '../api-actions';
 import {FilmsDataState} from '../../types/state';
 import {Reducer} from '../../constants';
 
@@ -41,10 +40,14 @@ export const filmsData = createSlice({
           state.films.splice(index, 1, film);
         }
       })
-      .addCase(deleteCommentId, (state, {payload: {filmId, commentId}}) => {
-        const indexFilm = state.films.findIndex((item) => item.id === filmId);
-        const comments = state.films[indexFilm].comments.filter((comment) => !(comment === commentId));
-        const film = {...state.films[indexFilm], comments};
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        const indexFilm = state.films.findIndex((item) => item.id === action.payload?.filmId);
+
+        const film = {
+          ...state.films[indexFilm],
+          comments: state.films[indexFilm].comments.filter((comment) => !(comment === action.payload?.commentId))
+        };
+
         state.films.splice(indexFilm, 1, film);
       });
   }
