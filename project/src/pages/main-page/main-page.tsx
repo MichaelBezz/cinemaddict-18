@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import {useEffect, useState} from 'react';
+import {useSearchParams} from 'react-router-dom';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
@@ -22,7 +23,9 @@ const MAX_CARD = 2;
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [filmCount, setFilmCount] = useState<number>(0);
+  const [filmCount, setFilmCount] = useState<number>(FILMS_PER_STEP);
+  const [searchParams] = useSearchParams();
+  const searchFilter = searchParams.get('filter');
 
   const films = useAppSelector(getSelectedFilms);
   const isDetailsDisplayed = useAppSelector(getIsFilmDisplayed);
@@ -37,20 +40,12 @@ function MainPage(): JSX.Element {
   }, [dispatch]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted) {
-      setFilmCount(Math.min(FILMS_PER_STEP, numberOfFilms));
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [numberOfFilms]);
+    setFilmCount(FILMS_PER_STEP);
+  }, [searchFilter]);
 
   const handleShowMoreButtonClick = () => {
-    setFilmCount((prevFilmsDisplayed) =>
-      Math.min(prevFilmsDisplayed + FILMS_PER_STEP, numberOfFilms)
+    setFilmCount((prevFilmCount) =>
+      Math.min(prevFilmCount + FILMS_PER_STEP, numberOfFilms)
     );
   };
 
