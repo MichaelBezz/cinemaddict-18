@@ -27,7 +27,11 @@ export const commentsData = createSlice({
         state.comments = [];
       })
       .addCase(postComment.fulfilled, (state, action) => {
-        state.comments = action.payload?.comments ?? [];
+        const comments = action.payload?.comments;
+
+        if (comments) {
+          state.comments = comments;
+        }
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
         const index = state.comments.findIndex((comment) => comment.id === action.payload?.commentId);

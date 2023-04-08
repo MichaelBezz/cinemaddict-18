@@ -26,7 +26,9 @@ export const filmsData = createSlice({
         state.isLoading = false;
         state.films = [];
       })
-      .addCase(putFilm.fulfilled, (state, {payload: film}) => {
+      .addCase(putFilm.fulfilled, (state, action) => {
+        const film = action.payload;
+
         if (film) {
           const index = state.films.findIndex((item) => item.id === film.id);
           state.films.splice(index, 1, film);
