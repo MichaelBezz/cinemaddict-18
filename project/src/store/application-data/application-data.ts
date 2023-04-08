@@ -21,6 +21,7 @@ export const applicationData = createSlice({
     },
     setFilter: (state, action: PayloadAction<FilterType>) => {
       state.filter = action.payload;
+      state.sort = SortType.Default;
     },
     setSort: (state, action: PayloadAction<SortType>) => {
       state.sort = action.payload;
