@@ -2,7 +2,9 @@ import he from 'he';
 import {Fragment, useState, ChangeEvent, FormEvent} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {useAppSelector} from '../../hooks/use-app-selector';
 import {postComment} from '../../store/api-actions';
+import {getIsDisabled} from '../../store/comments-data/selectors';
 
 import {FilmId} from '../../types/film';
 import {LocalComment} from '../../types/comment';
@@ -17,6 +19,7 @@ const emojiTypes = Object.values(EmojiType);
 
 function CommentForm({filmId}: CommentFormProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const isFormDisabled = useAppSelector(getIsDisabled);
 
   const [formData, setFormData] = useState<LocalComment>({
     emotion: '',
@@ -25,7 +28,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
 
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = event.target;
-    setFormData({...formData, [name]: he.encode(value)});
+    setFormData({...formData, [name]: he.escape(value)});
   };
 
   const handleFormSubmit = (event: FormEvent) => {
@@ -42,6 +45,8 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
     });
   };
 
+  const isDisabled = !formData.emotion || !formData.comment || isFormDisabled;
+
   return (
     <form className="film-details__new-comment" action="#" method="post" onSubmit={handleFormSubmit}>
       <div className="film-details__add-emoji-label">
@@ -57,6 +62,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
           value={formData.comment}
           onChange={handleFieldChange}
           placeholder="Select reaction below and write comment here"
+          disabled={isFormDisabled}
         >
         </textarea>
       </label>
@@ -72,6 +78,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
               value={type}
               onChange={handleFieldChange}
               checked={type === formData.emotion}
+              disabled={isFormDisabled}
             />
 
             <label className="film-details__emoji-label" htmlFor={`emoji-${type}`}>
@@ -81,7 +88,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
         ))}
       </div>
 
-      <button className="film-details__comment-post" type="submit">
+      <button className="film-details__comment-post" type="submit" disabled={isDisabled}>
         Отправить
       </button>
     </form>

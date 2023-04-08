@@ -22,4 +22,5 @@ export type FilmsDataState = {
 export type CommentsDataState = {
   comments: Comments;
   isLoading: boolean;
+  isDisabled: boolean;
 };

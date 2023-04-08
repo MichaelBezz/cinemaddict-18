@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
 import {fetchComments, deleteComment} from '../../store/api-actions';
-import {getComments} from '../../store/comments-data/selectors';
+import {getComments, getIsDisabled} from '../../store/comments-data/selectors';
 
 import CommentForm from '../comment-form/comment-form';
 
@@ -17,12 +17,12 @@ type CommentListProps = {
 
 function CommentList({filmId}: CommentListProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const comments = useAppSelector(getComments);
+  const isDisabled = useAppSelector(getIsDisabled);
 
   useEffect(() => {
     dispatch(fetchComments(filmId));
   }, [dispatch, filmId]);
-
-  const comments = useAppSelector(getComments);
 
   return (
     <section className="film-details__comments-wrap">
@@ -48,6 +48,7 @@ function CommentList({filmId}: CommentListProps): JSX.Element {
                   onClick={() => {
                     dispatch(deleteComment({filmId, commentId: comment.id}));
                   }}
+                  disabled={isDisabled}
                 >
                   Delete
                 </button>
