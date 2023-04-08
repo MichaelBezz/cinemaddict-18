@@ -6,7 +6,8 @@ import {Reducer} from '../../constants';
 
 const initialState: FilmsDataState = {
   films: [],
-  isLoading: false
+  isLoading: false,
+  isDisabled: false
 };
 
 export const filmsData = createSlice({
@@ -26,13 +27,20 @@ export const filmsData = createSlice({
         state.isLoading = false;
         state.films = [];
       })
+      .addCase(putFilm.pending, (state) => {
+        state.isDisabled = true;
+      })
       .addCase(putFilm.fulfilled, (state, action) => {
+        state.isDisabled = false;
         const film = action.payload;
 
         if (film) {
           const index = state.films.findIndex((item) => item.id === film.id);
           state.films.splice(index, 1, film);
         }
+      })
+      .addCase(putFilm.rejected, (state) => {
+        state.isDisabled = false;
       })
       .addCase(postComment.fulfilled, (state, action) => {
         const film = action.payload?.movie;

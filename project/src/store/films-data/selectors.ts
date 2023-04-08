@@ -14,6 +14,7 @@ const compare: Record<SortType, (film: FilmAdapted, nextFilm: FilmAdapted) => nu
 
 export const getAllFilms = (state: State): FilmsAdapted | [] => state[Reducer.Films].films;
 export const getIsLoading = (state: State): boolean => state[Reducer.Films].isLoading;
+export const getIsDisabled = (state: State): boolean => state[Reducer.Films].isDisabled;
 
 export const getFilmById = createSelector(
   [getAllFilms, (_, id: FilmId | null) => id],

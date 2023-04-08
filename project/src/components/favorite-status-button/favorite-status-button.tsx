@@ -1,7 +1,9 @@
 import cn from 'classnames';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
+import {useAppSelector} from '../../hooks/use-app-selector';
 import {putFilm} from '../../store/api-actions';
+import {getIsDisabled} from '../../store/films-data/selectors';
 
 import {FilmAdapted} from '../../types/film';
 import {ButtonType} from '../../constants';
@@ -14,6 +16,7 @@ type FavoriteStatusButtonProps = {
 
 function FavoriteStatusButton({film, type}: FavoriteStatusButtonProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const isDisabled = useAppSelector(getIsDisabled);
 
   const isCardType = type === ButtonType.Card;
   const isCardTypeActive = isCardType && film.userDetails.favorite;
@@ -42,6 +45,7 @@ function FavoriteStatusButton({film, type}: FavoriteStatusButtonProps): JSX.Elem
       name="favorite"
       type="button"
       onClick={handleButtonClick}
+      disabled={isDisabled}
     >
       Add to favorites
     </button>

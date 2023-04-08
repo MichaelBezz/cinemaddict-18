@@ -17,6 +17,7 @@ export type ApplicationDataState = {
 export type FilmsDataState = {
   films: FilmsAdapted;
   isLoading: boolean;
+  isDisabled: boolean;
 };
 
 export type CommentsDataState = {
