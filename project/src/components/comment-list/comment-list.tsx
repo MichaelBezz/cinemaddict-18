@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 import {useAppDispatch} from '../../hooks/use-app-dispatch';
 import {useAppSelector} from '../../hooks/use-app-selector';
@@ -8,6 +8,7 @@ import {getComments, getIsLoading, getIsDisabled} from '../../store/comments-dat
 import CommentForm from '../comment-form/comment-form';
 
 import {FilmId} from '../../types/film';
+import {CommentId} from '../../types/comment';
 import {formatCommentData} from '../../utils/utils';
 
 
@@ -17,6 +18,8 @@ type CommentListProps = {
 
 function CommentList({filmId}: CommentListProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const [active, setActive] = useState<CommentId | null>(null);
+
   const comments = useAppSelector(getComments);
   const isLoading = useAppSelector(getIsLoading);
   const isDisabled = useAppSelector(getIsDisabled);
@@ -53,10 +56,11 @@ function CommentList({filmId}: CommentListProps): JSX.Element {
                   type="button"
                   onClick={() => {
                     dispatch(deleteComment({filmId, commentId: comment.id}));
+                    setActive(comment.id);
                   }}
                   disabled={isDisabled}
                 >
-                  Delete
+                  {active === comment.id && isDisabled ? 'Deleting...' : 'Delete'}
                 </button>
               </p>
             </div>
